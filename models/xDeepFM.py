@@ -2,6 +2,8 @@ import torch.nn as nn
 from models.Base_Model import *
 from tensorflow.python.keras.callbacks import History
 
+
+
 class ExtremeDeepFMModel(BaseModel):
     def __init__(self, use_dnn = True, use_cin = True, linear_layer_size = (256, 1) ,dnn_hidden_units = (256, 256),
                  cin_layer_size = (256, 128,),  cin_split_half = True, cin_activation = 'relu',
