@@ -1,0 +1,9 @@
+cuda_device:-1
+feature_file_path:None
+label_file_path:None
+log:log
+test_size:0.5
+optimizer:adam
+loss_func:binary_crossentropy
+metrics:['binary_crossentropy', 'auc']
+learningrate:0.0001
