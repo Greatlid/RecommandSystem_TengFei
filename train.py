@@ -21,9 +21,9 @@ def train(hparams):
     for key, val in params.items():
         hparams.logger.info(str(key) + ':' + str(val))
 
-    # feature, label = LoadData(hparams)
-    feature, label = [[[[[1,1],[2,3],[4,5]], [[1,1],[2,3],[4,5]]],     [[1,1,1,2,2,2],[3,4,5,6,7,8],[1,2,3,4,5,6]]],
-                      [[[[1,1],[2,3],[4,5]], [[1,1],[2,3],[4,5]]],     [[1,1,1,2,2,2],[3,4,5,6,7,8],[1,2,3,4,5,6]]]], [1,2]
+    feature, label = LoadData(hparams)
+    # feature, label = [[[[[1,1],[2,1]], [[3,1],[4,1],[5,0.1]]],     [[0,0,0,0,0],[1,2,3,4,5],[1,1,1,1,0.1]]],
+    #                   [[[[1,1],[2,1]], [[3,1],[6,1],[5,0.5]]],     [[1,1,1,1,1],[1,2,3,5,6],[1,1,1,0.5,1]]]], [1,0]
     #split data for train and test
     X_train, X_test, y_train, y_test = train_test_split(feature, label, test_size=hparams.test_size, shuffle = hparams.shuffle,random_state=1234)
 

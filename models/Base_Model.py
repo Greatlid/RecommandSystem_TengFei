@@ -63,7 +63,7 @@ class BaseModel(torch.nn.Module):
         model = self.train()
         loss_func = self.loss_func
         optim = self.optim
-        if self.gpus:
+        if self.gpus[0] > 0:
             print('parallel running on these gpus:', self.gpus)
             model = torch.nn.DataParallel(model, device_ids=self.gpus)
             batch_size *= len(self.gpus)  # input `batch_size` is batch_size per gpu

@@ -2,9 +2,9 @@
 
 parameter = {
 #'device': 'cuda',  # cpu or 'cuda'
-'cuda_index': [0],  #cpu:-1  gpu: gpu index
-'feature_file_path': None,
-'label_file_path': None,
+'cuda_index': [-1],  #cpu:-1  gpu: gpu index
+'feature_file_path': './data/feature.txt',
+'label_file_path': './data/label.txt',
 'log':'log',
 'test_size': 0.5,
 'optimizer':"adam",  #"sgd" "adagrad" "rmsprop"

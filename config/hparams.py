@@ -33,6 +33,8 @@ class Hparams:
         self.dnn_use_bn= config.parameter['dnn_use_bn']
         self.task= config.parameter['task']
         self.init_method= config.parameter['init_method']
+        self.feature_file_path = config.parameter['feature_file_path']
+        self.label_file_path = config.parameter['label_file_path']
 
     def values(self):
         return config.parameter
