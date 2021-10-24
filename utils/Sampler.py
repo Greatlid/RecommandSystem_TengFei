@@ -10,5 +10,4 @@ class BatchSampler():
 
     def GetBatch(self):
         #产生一个batch的数据,注意label可能为none，需要进行判断
-        for i in range(100):
-            yield i, i
+        yield self.feature, self.label

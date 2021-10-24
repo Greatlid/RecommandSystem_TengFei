@@ -7,8 +7,12 @@ def LoadData(hparams):
     #load feature, label, feature: each user:[fieldid:featureid:value]  list.sparse tensor
     #load feature, each user:[[[[feature_id, value], ...], [...]],      [[feature_row], [feature_col], [value]]]
     #数据集文件以str形式存储，str eval, with open...
-    feature, label = \
-        np.loadtxt(hparams.feature_file_path), np.loadtxt(hparams.label_file_path)
+    with open(hparams.feature_file_path, 'r') as fp:
+        feature = fp.read()
+        feature = eval(feature)
+    with open(hparams.label_file_path, 'r') as fp:
+        label = fp.read()
+        label = eval(label)
     return feature, label
 
 

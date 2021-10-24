@@ -35,11 +35,6 @@ class ExtremeDeepFMModel(BaseModel):
 
     def forward(self, x):
         # process data
-        # 每个field的每个feature都有一个embedding,
-        # dnn & efm feature:对每个用户的每个field的feature embedding,加权相加,再把每个field的向量结果拼接起来
-        # linear feature shape:usenum,feature num  值是feature value
-        # [dnn feature, linear feature], label
-
         feat_emb = self._build_embedding(x)  #usernum*fieldnum*emb_dim
         logit = self._build_linear(x)
         if self.use_cin:
