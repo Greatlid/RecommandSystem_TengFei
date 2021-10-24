@@ -33,6 +33,7 @@ class ExtremeDeepFMModel(BaseModel):
             #                                l2=l2_reg_cin)
         self.to(device)
 
+
     def forward(self, x):
         # process data
         feat_emb = self._build_embedding(x)  #usernum*fieldnum*emb_dim
