@@ -56,4 +56,6 @@ def train(hparams):
     pred_target = np.array(y_test)
     mse = mean_squared_error(pred_target, pred_ans)
     acc = accuracy_score(pred_target, pred_ans)
+    hparams.logger.info('mse:' + str(mse))
+    hparams.logger.info('acc:' + str(acc))
     print(mse, acc)
