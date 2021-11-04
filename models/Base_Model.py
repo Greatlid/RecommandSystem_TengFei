@@ -101,7 +101,7 @@ class BaseModel(torch.nn.Module):
             for x_train, y_train in train_loader.GetBatch():
                 y_pred = model(x_train).squeeze()
                 optim.zero_grad()
-                loss = loss_func(y_pred, y_train.squeeze(), reduction='sum')
+                loss = loss_func(y_pred, torch.Tensor(y_train).squeeze(), reduction='sum')
                 reg_loss = self.get_regularization_loss()
 
                 total_loss = loss + reg_loss + self.aux_loss
@@ -115,8 +115,12 @@ class BaseModel(torch.nn.Module):
                     for name, metric_fun in self.metrics.items():
                         if name not in train_result:
                             train_result[name] = []
-                        train_result[name].append(metric_fun(
-                            y.cpu().data.numpy(), y_pred.cpu().data.numpy().astype("float64")))
+                        y_target, y_pred = torch.Tensor(y_train).cpu().data.numpy().astype("float64"), \
+                                           y_pred.cpu().data.numpy().astype("float64")
+                        if not y_pred.shape:
+                            y_pred = np.array([y_pred])
+                        train_result[name].append(metric_fun(y_target,
+                            y_pred))
 
 
 
@@ -187,7 +191,7 @@ class BaseModel(torch.nn.Module):
                 y_pred = model(x_test).cpu().data.numpy()  # .squeeze()
                 pred_ans.append(y_pred)
 
-        return np.concatenate(pred_ans).astype("float64")
+        return np.concatenate(np.concatenate(pred_ans)).astype("float64")
 
     def compile(self, optimizer = None,
                 lr = 0.001,

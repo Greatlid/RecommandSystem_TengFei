@@ -3,6 +3,11 @@ import config.config as config
 
 class Hparams:
     def __init__(self):
+        self.epochs = config.parameter['epochs']
+        self.initial_epoch = config.parameter['initial_epoch']
+        self.field_num = config.parameter['field_num']
+        self.feature_count = config.parameter['feature_count']
+        self.feature_dim = config.parameter['feature_dim']
         self.log = config.parameter['log']
         self.logger = None
         self.test_size = config.parameter['test_size']
@@ -15,6 +20,7 @@ class Hparams:
         self.shuffle = config.parameter['shuffle']
         self.learningrate = config.parameter['learningrate']
         self.shuffle = config.parameter['shuffle']
+        self.batch_size = config.parameter['batch_size']
         self.use_dnn = config.parameter['use_dnn']
         self.use_cin = config.parameter['use_cin']
         self.linear_layer_size = config.parameter['linear_layer_size']

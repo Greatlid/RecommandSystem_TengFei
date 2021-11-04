@@ -2,6 +2,7 @@ import torch
 from models.xDeepFM import ExtremeDeepFMModel as xDeepFM
 from sklearn.model_selection import train_test_split
 import numpy as np
+from sklearn.metrics import log_loss, roc_auc_score, mean_squared_error, accuracy_score
 
 def LoadData(hparams):
     #load feature, label, feature: each user:[fieldid:featureid:value]  list.sparse tensor
@@ -22,6 +23,8 @@ def train(hparams):
         hparams.logger.info(str(key) + ':' + str(val))
 
     feature, label = LoadData(hparams)
+    if len(feature[0]) != hparams.field_num:
+        hparams.field_num = len(feature[0])
     # feature, label = [[[[[1,1],[2,1]], [[3,1],[4,1],[5,0.1]]],     [[0,0,0,0,0],[1,2,3,4,5],[1,1,1,1,0.1]]],
     #                   [[[[1,1],[2,1]], [[3,1],[6,1],[5,0.5]]],     [[1,1,1,1,1],[1,2,3,5,6],[1,1,1,0.5,1]]]], [1,0]
     #split data for train and test
@@ -35,7 +38,9 @@ def train(hparams):
         print('cpu...')
         hparams.device = 'cpu'
 
-    model = xDeepFM(use_dnn = hparams.use_dnn, use_cin = hparams.use_cin, linear_layer_size = hparams.linear_layer_size ,
+    model = xDeepFM(field_num = hparams.field_num,feature_count = hparams.feature_count,feature_dim = hparams.feature_dim,
+                    use_dnn = hparams.use_dnn, use_cin = hparams.use_cin,
+                    linear_layer_size = (hparams.feature_count,1),
                     dnn_hidden_units = hparams.dnn_hidden_units, cin_layer_size = hparams.cin_layer_size,
                     cin_split_half = hparams.cin_split_half, cin_activation = hparams.cin_activation,
                     l2_reg_linear = hparams.l2_reg_linear, l2_reg_embedding = hparams.l2_reg_embedding,
@@ -44,5 +49,11 @@ def train(hparams):
                     dnn_use_bn = hparams.dnn_use_bn, task = hparams.task, device= hparams.device, gpus=hparams.cuda_index)
     model.compile(optimizer= hparams.optimizer,lr=hparams.learningrate, loss=hparams.loss_func, metrics=hparams.metrics)
     model._get_initializer(hparams.init_method)
-    history = model.fit(X_train, y_train)
-    pred_ans = model.predict(X_test)
+    history = model.fit(X_train, y_train, initial_epoch=hparams.initial_epoch,batch_size=hparams.batch_size, epochs=hparams.epochs, shuffle=hparams.shuffle)
+
+    #hparams.logger.info
+    pred_ans = model.predict(X_test, hparams.batch_size)
+    pred_target = np.array(y_test)
+    mse = mean_squared_error(pred_target, pred_ans)
+    acc = accuracy_score(pred_target, pred_ans)
+    print(mse, acc)
